@@ -4,6 +4,9 @@ import requests
 import plotly.express as px
 import os
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+
 API_UPLOAD_URL = "http://127.0.0.1:8000/upload"
 API_RECLASSIFICAR_URL = "http://127.0.0.1:8000/reclassificar"
 API_CATEGORIAS_URL = "http://127.0.0.1:8000/categorias"
@@ -15,7 +18,7 @@ st.title("Dashboard Financeiro – Classificação Automática")
 @st.cache_data(show_spinner=True)
 def carregar_extrato(caminho_arquivo):
     if not os.path.exists(caminho_arquivo):
-        st.error("Arquivo não encontrado.")
+        st.error(f"Arquivo não encontrado: {caminho_arquivo}")
         return None
 
     try:
@@ -41,10 +44,8 @@ def carregar_extrato(caminho_arquivo):
             st.warning("Nenhuma transação classificada foi retornada.")
             return None
 
-      
         df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
-   
         if "valor" not in df.columns:
             if "amount" in df.columns:
                 df.rename(columns={"amount": "valor"}, inplace=True)
@@ -62,7 +63,6 @@ def carregar_extrato(caminho_arquivo):
 
 
 def atualizar_dataframe():
-    """Recarrega o DataFrame atualizado do backend"""
     try:
         response = requests.get(API_CATEGORIAS_URL)
         if response.status_code == 200:
@@ -86,19 +86,18 @@ def atualizar_dataframe():
         st.error(f"Erro ao atualizar dados: {e}")
         return st.session_state["df"]
 
-
 if "df" not in st.session_state:
     st.session_state["df"] = pd.DataFrame()
 
 col1, col2 = st.columns(2)
 with col1:
     if st.button("Carregar Extrato 1"):
-        df_result = carregar_extrato("../data/extrato1.xlsx")
+        df_result = carregar_extrato(os.path.join(DATA_DIR, "extrato1.xlsx"))
         if df_result is not None:
             st.session_state["df"] = df_result
 with col2:
     if st.button("Carregar Extrato 2"):
-        df_result = carregar_extrato("../data/extrato2.xlsx")
+        df_result = carregar_extrato(os.path.join(DATA_DIR, "extrato2.xlsx"))
         if df_result is not None:
             st.session_state["df"] = df_result
 
@@ -165,7 +164,6 @@ if df is not None and hasattr(df, "empty") and not df.empty:
                         msg = response.json().get("mensagem", "Categoria atualizada.")
                         st.success(msg)
 
-                      
                         df_atualizado = atualizar_dataframe()
                         st.session_state["df"] = df_atualizado
                         st.rerun()
