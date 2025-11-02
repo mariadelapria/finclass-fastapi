@@ -7,9 +7,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 
-API_UPLOAD_URL = "http://127.0.0.1:8000/upload"
-API_RECLASSIFICAR_URL = "http://127.0.0.1:8000/reclassificar"
-API_CATEGORIAS_URL = "http://127.0.0.1:8000/categorias"
+API_UPLOAD_URL = "https://finclass-fastapi.onrender.com/upload"
+API_RECLASSIFICAR_URL = "https://finclass-fastapi.onrender.com/reclassificar"
+API_CATEGORIAS_URL = "https://finclass-fastapi.onrender.com/categorias"
 
 st.set_page_config(page_title="Dashboard Financeiro", layout="wide")
 st.title("Dashboard Financeiro – Classificação Automática")
