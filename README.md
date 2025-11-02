@@ -1,5 +1,9 @@
 *Classificador de Extratos Financeiros*
 
+link acesso ao Programa: https://finclass-fastapi-cuwotbs8bsvnhupywhzknq.streamlit.app/
+link acesso da API https://finclass-fastapi.onrender.com
+link acesso ao Programa
+
 O projeto tem como objetivo automatizar a classificação de transações financeiras presentes em extratos bancários, transformando dados brutos em informações organizadas por categoria de consumo.
 A proposta é facilitar a análise de gastos e receitas, oferecendo uma visão clara do fluxo financeiro e permitindo ajustes manuais quando necessário.
 
